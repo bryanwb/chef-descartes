@@ -15,11 +15,23 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = ["cookbooks"]
     
     chef.json = {
+      "rbenv" => {
+        "rubies" => [ "1.9.3-p194" ],
+        "gems" => {
+          "1.9.3-p194" => [
+                           { 'name' => 'bundler' }
+                          ]
+        }
+      }
     }
 
     chef.run_list = [
-      "recipe[descartes::postgres]",
-      "recipe[descartes::default]"
+                     "recipe[yum::epel]",
+                     "recipe[ruby_build]",
+                     "recipe[rbenv::system]",
+                     "recipe[descartes::rbenv]",
+                     "recipe[descartes::postgres]",
+                     "recipe[descartes::default]"
     ]
   end
 
